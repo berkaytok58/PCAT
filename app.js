@@ -1,3 +1,28 @@
-const fn = function () {
-  console.log("function working");
+const express = require("express");
+const app = express();
+const path = require("path")
+
+const myLogger = (req, res, next) => {
+  console.log("middleware log 1");
+  next()/////// bi sonrakine ilerlemiyor bunu yazmazsan req de kalıyor
 };
+const myLogger2 = (req, res, next) => {
+  console.log("middleware log 2");
+  next()
+}
+
+/////////// middlewares///////////
+
+app.use(express.static('public'))
+app.use(myLogger)
+app.use(myLogger2)
+
+app.get('/', (req, res) =>{
+res.sendFile(path.resolve(__dirname, 'temp/index.html'))
+
+})
+
+const port = 3000
+app.listen(port, () =>{
+    console.log(`sunucu ${port} portunda çalışmaya başladı`);
+})
