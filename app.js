@@ -1,28 +1,36 @@
 const express = require("express");
-const app = express();
-const path = require("path")
+const ejs = require("ejs");
+const path = require("path");
 
-const myLogger = (req, res, next) => {
-  console.log("middleware log 1");
-  next()/////// bi sonrakine ilerlemiyor bunu yazmazsan req de kalıyor
-};
-const myLogger2 = (req, res, next) => {
-  console.log("middleware log 2");
-  next()
-}
+const app = express();
+
+/////////template engine/////////////
+
+app.set("view engine", "ejs");
 
 /////////// middlewares///////////
 
-app.use(express.static('public'))
-app.use(myLogger)
-app.use(myLogger2)
+app.use(express.static("public"));
 
-app.get('/', (req, res) =>{
-res.sendFile(path.resolve(__dirname, 'temp/index.html'))
+//////////////////////// routes //////////
 
-})
+app.get("/", (req, res) => {
+  
+  res.render('index')
+  
+});
+app.get("/about", (req, res) => {
+  
+  res.render('about')
+  
+});
+app.get("/add", (req, res) => {
+  
+  res.render('add')
+  
+});
 
-const port = 3000
-app.listen(port, () =>{
-    console.log(`sunucu ${port} portunda çalışmaya başladı`);
-})
+const port = 3000;
+app.listen(port, () => {
+  console.log(`sunucu ${port} portunda çalışmaya başladı`);
+});
